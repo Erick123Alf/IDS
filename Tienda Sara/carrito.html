@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Sara</title>
+
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tienda Sara</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="galeria.html">Galeria</a>
+          </li>
+          <div class="dropdown open">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true">
+                  Categorias
+                </button>
+            <div class="dropdown-menu" aria-labelledby="triggerId">
+              <button class="dropdown-item" href="#">Damas</button>
+              <button class="dropdown-item" href="#">Caballeros</button>
+              <button class="dropdown-item" href="#">Niños</button>
+              <button class="dropdown-item disabled" href="index.html">Volver</button>
+            </div>
+          </div></a>
+        </ul>
+
+        <button class="btn btn-outline-primary">
+          🛒 Carrito (<span id="cart-count"></span>)
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container mt-5">
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">Carrito de Compras</h4>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cart-items">
+              <tr>
+                <td>Camisa</td>
+                <td class="price">20</td>
+                <td>
+                  <div class="input-group">
+                    <button class="btn btn-outline-secondary btn-sm minus">-</button>
+                    <input type="text" class="form-control text-center quantity" value="1" readonly>
+                    <button class="btn btn-outline-secondary btn-sm plus">+</button>
+                  </div>
+                </td>
+                <td class="subtotal">20</td>
+                <td>
+                  <button class="btn btn-danger btn-sm remove">X</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Pantalón</td>
+                <td class="price">35</td>
+                <td>
+                  <div class="input-group">
+                    <button class="btn btn-outline-secondary btn-sm minus">-</button>
+                    <input type="text" class="form-control text-center quantity" value="1" readonly>
+                    <button class="btn btn-outline-secondary btn-sm plus">+</button>
+                  </div>
+                </td>
+                <td class="subtotal">35</td>
+                <td>
+                  <button class="btn btn-danger btn-sm remove">X</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-end">
+          <h5>Total: $<span id="total">55</span></h5>
+          <button class="btn btn-success mt-2">Proceder al Pago</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="bootstrap.bundle.min.js"></script>
+
+  <script>
+   
+    document.querySelectorAll('.plus').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = button.closest('tr');
+        const quantityInput = row.querySelector('.quantity');
+        let quantity = parseInt(quantityInput.value);
+        quantity++;
+        quantityInput.value = quantity;
+
+        const price = parseFloat(row.querySelector('.price').textContent);
+        row.querySelector('.subtotal').textContent = (price * quantity).toFixed(2);
+        updateTotal();
+      });
+    });
+
+    document.querySelectorAll('.minus').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = button.closest('tr');
+        const quantityInput = row.querySelector('.quantity');
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+          quantity--;
+          quantityInput.value = quantity;
+
+          const price = parseFloat(row.querySelector('.price').textContent);
+          row.querySelector('.subtotal').textContent = (price * quantity).toFixed(2);
+          updateTotal();
+        }
+      });
+    });
+
+    document.querySelectorAll('.remove').forEach(button => {
+      button.addEventListener('click', () => {
+        button.closest('tr').remove();
+        updateTotal();
+      });
+    });
+
+    function updateTotal() {
+      let total = 0;
+      document.querySelectorAll('.subtotal').forEach(subtotal => {
+        total += parseFloat(subtotal.textContent);
+      });
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+  </script>
+
+</body>
+</html>
